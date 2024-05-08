@@ -85,7 +85,7 @@ def load_embeddings(embed_file):
     with open(embed_file) as ef:
         for line in ef:
             line = line.rstrip().split()
-            vec = np.array(line[1:]).astype(np.float)
+            vec = np.array(line[1:]).astype(float)
             vec = vec / float(np.linalg.norm(vec) + 1e-6)
             W.append(vec)
         #UNK embedding, gaussian randomly initialized
@@ -677,7 +677,7 @@ class MyDataset(Dataset):
     def __getitem__(self, idx):
         return self.X[idx]
 
-def pad_sequence(x, max_len, type=np.int):
+def pad_sequence(x, max_len, type=int):
 
     padded_x = np.zeros((len(x), max_len), dtype=type)
     for i, row in enumerate(x):
@@ -1046,7 +1046,7 @@ def load_pretrain_emb(embedding_path):
                 word_vector = []
                 for j in range(embedd_dim):
                     word_vector.append(_readFloat(f))
-                word_vector = np.array(word_vector, np.float)
+                word_vector = np.array(word_vector, float)
 
                 f.read(1)  # a line break
 

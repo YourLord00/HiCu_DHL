@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from torch.nn.init import xavier_uniform_ as xavier_uniform
 import numpy as np
 from utils.utils import build_pretrain_embedding, load_embeddings
-from utils.losses import AsymmetricLoss, AsymmetricLossOptimized
+from utils.losses import AsymmetricLoss, AsymmetricLossOptimized, DiceLoss
 from math import floor, sqrt
 
 
@@ -205,6 +205,8 @@ class Decoder(nn.Module):
 
         if args.loss == 'BCE':
             self.loss_function = nn.BCEWithLogitsLoss()
+        elif args.loss == 'DICE':
+            self.loss_function = DiceLoss()
         elif args.loss == 'ASL':
             asl_config = [float(c) for c in args.asl_config.split(',')]
             self.loss_function = AsymmetricLoss(gamma_neg=asl_config[0], gamma_pos=asl_config[1],

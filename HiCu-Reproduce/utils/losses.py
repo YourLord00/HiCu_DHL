@@ -159,3 +159,40 @@ class ASLSingleLabel(nn.Module):
             loss = loss.mean()
 
         return loss
+
+class DiceLoss(nn.Module):
+    def __init__(self, smooth=1e-6, reduction='mean'):
+        super(DiceLoss, self).__init__()
+        self.smooth = smooth
+        self.reduction = reduction
+
+    def forward(self, logits, targets):
+        """
+        Parameters
+        ----------
+        logits: input logits from the last layer of your model
+        targets: ground truth labels, same shape as logits
+
+        Returns
+        -------
+        dice_loss: computed Dice Loss
+        """
+        # Applying the sigmoid function to convert logits to probabilities
+        probs = torch.sigmoid(logits)
+        
+        # Calculate intersection and union
+        intersection = torch.sum(probs * targets, dim=1)  # Sum over the label dimension
+        union = torch.sum(probs + targets, dim=1)  # Sum over the label dimension
+        
+        
+        # Compute Dice score and Dice loss
+        dice_score = (2. * intersection + self.smooth) / (union + self.smooth)
+        dice_loss = 1 - dice_score
+        
+        # Handling the reduction
+        if self.reduction == 'mean':
+            return dice_loss.mean()
+        elif self.reduction == 'sum':
+            return dice_loss.sum()
+        else:
+            return dice_loss

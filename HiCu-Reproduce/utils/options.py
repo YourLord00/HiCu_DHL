@@ -34,14 +34,14 @@ parser.add_argument("--use_ext_emb", action="store_const",
                     const=True, default=False)
 parser.add_argument('--cat_hyperbolic', action="store_const",
                     const=True, default=False)
-parser.add_argument("--loss", type=str, choices=['BCE', 'ASL', 'ASLO'], default='BCE')
+parser.add_argument("--loss", type=str, choices=['BCE', 'ASL', 'ASLO', 'DICE'], default='BCE')
 parser.add_argument("--asl_config", type=str, default='0,0,0')
 parser.add_argument("--asl_reduction", type=str, choices=['mean', 'sum'], default='sum')
 
 # training
 parser.add_argument("--n_epochs", type=str, default="2,3,5,10,500")
 parser.add_argument("--depth", type=int, default=5)
-parser.add_argument("--dropout", type=float, default=0.2)
+parser.add_argument("--dropout", type=float, default=0.5)
 parser.add_argument("--patience", type=int, default=10)
 parser.add_argument("--batch_size", type=int, default=16)
 parser.add_argument("--lr", type=float, default=1e-4)
